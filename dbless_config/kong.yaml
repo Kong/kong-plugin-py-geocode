@@ -1,0 +1,13 @@
+_format_version: "2.1"
+_transform: true
+
+services:
+- name: httpbin-svc
+  url: http://httpbin.org/anything
+  routes:
+  - name: example-route
+    paths:
+    - /any
+    plugins:
+    - name: py-geocode
+

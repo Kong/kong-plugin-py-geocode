@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  kong:
+    build: .
+    container_name: kong
+    restart: always
+    environment:
+      - KONG_DATABASE=off #database=off for `dbless` mode
+      - KONG_DECLARATIVE_CONFIG=/opt/conf/dbless_config/kong.yaml
+      - KONG_ADMIN_ACCESS_LOG=/dev/stdout # direct all logs to stdout and stderr
+      - KONG_PROXY_ERROR_LOG=/dev/stderr
+      - KONG_ADMIN_ERROR_LOG=/dev/stderr
+      - KONG_PROXY_STREAM_ERROR_LOG=/dev/stderr
+      - KONG_PLUGINS=bundled,py-geocode
+      - KONG_PLUGINSERVER_NAMES=py
+      - KONG_PLUGINSERVER_PY_SOCKET=/usr/local/kong/python_pluginserver.sock
+      - KONG_PLUGINSERVER_PY_START_CMD=/opt/kong-python-pdk/kong-pluginserver --no-lua-style --plugins-directory /opt/conf/kong-py-plugins
+      - KONG_PLUGINSERVER_PY_QUERY_CMD=/opt/kong-python-pdk/kong-pluginserver --no-lua-style --plugins-directory /opt/conf/kong-py-plugins --dump-all-plugins
+    volumes:
+      - ./kong-py-plugins:/opt/conf/kong-py-plugins
+      - ./dbless_config:/opt/conf/dbless_config
+    ports:
+      - 8000:8000
+      - 8443:8443
+      - 8001:8001
+      - 8444:8444
+    healthcheck:
+      test: ["CMD", "kong", "health"]
+      interval: 1s
+      timeout: 10s
+      retries: 3
