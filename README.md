@@ -2,6 +2,8 @@
 
 A Kong Custom Plugin using the Python PDK that performs geocoding using the [GeoPy](https://geopy.readthedocs.io/en/stable/) library.
 
+When making an API request to Kong, the caller should be able to pass location search keywords such as “Trafalgar Square” in the request header. The plugin will use the GeoPy library to lookup the address for the search terms, determine the latitude and longitude for the address, and add them as additional headers to the request before passing it to the upstream.
+
 ## Usage
 
 1. Clone this repo - remember to use --recurse-submodules
