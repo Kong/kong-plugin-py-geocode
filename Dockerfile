@@ -4,7 +4,7 @@ USER root
 # PYTHONWARNINGS=ignore is needed to build gevent on Python 3.9
 RUN apk update && \
     apk add python3 py3-pip python3-dev musl-dev libffi-dev gcc g++ file make && \
-    PYTHONWARNINGS=ignore pip3 install kong-pdk requests geopy
+    PYTHONWARNINGS=ignore pip3 install kong-pdk geopy
 WORKDIR /opt/kong-python-pdk
 COPY ./kong-python-pdk .
 # reset back the defaults
